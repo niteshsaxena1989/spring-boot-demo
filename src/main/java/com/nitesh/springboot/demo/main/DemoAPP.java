@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "com.nitesh.springboot.demo.controller")
+@ComponentScan(basePackages = "com.nitesh.springboot.demo.*")
 public class DemoAPP {
     /*
     You have to keep SpringBootApplication Class in the root package to automatically scan all the spring bean and
