@@ -5,10 +5,8 @@ import jdk.nashorn.internal.runtime.logging.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.io.ObjectInputStream;
+import java.util.*;
 
 @Service
 public class ProductService implements InitializingBean {
@@ -27,5 +25,29 @@ public class ProductService implements InitializingBean {
 
     public Collection<Product> getAllProducts() {
         return products;
+    }
+
+    public Product getProduct(int id) {
+        return products.stream().filter(p -> p.getId() == id).findFirst().get();
+    }
+
+    public void addProduct(Product product) {
+        products.add(product);
+    }
+
+    public Boolean updateProduct(Product product, int id) {
+        Boolean status = Boolean.FALSE;
+        for (int i = 0; i < products.size(); i++) {
+            Product p = products.get(i);
+            if (p.getId() == id) {
+                products.set(i, product);
+                status = Boolean.TRUE;
+            }
+        }
+        return status;
+    }
+
+    public Boolean deleteProduct(int id) {
+        return products.removeIf(p -> p.getId() == id);
     }
 }
