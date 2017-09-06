@@ -1,53 +1,60 @@
 package com.nitesh.springboot.demo.service;
 
 import com.nitesh.springboot.demo.entity.Product;
-import jdk.nashorn.internal.runtime.logging.Logger;
+import com.nitesh.springboot.demo.repository.ProductRepository;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.ObjectInputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class ProductService implements InitializingBean {
 
-    List<Product> products = new ArrayList<Product>();
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        System.out.println("BootStraping products . . .");
-        for (int i = 0; i < 5; i++) {
-            products.add(new Product(i+1, "Product "+ (i+1), "6464248111||||56546-"+ (i+1),
-                    456.35D, new Date(), "Company "+ (i+1)));
-        }
-        System.out.println("BootStraping products . . . Finished");
-    }
+    @Autowired
+    private ProductRepository productRepository;
 
     public Collection<Product> getAllProducts() {
+        List<Product> products = new ArrayList<Product>();
+        Iterable<Product> productIterable = productRepository.findAll();
+        productIterable.forEach(p -> products.add(p));
         return products;
     }
 
-    public Product getProduct(int id) {
-        return products.stream().filter(p -> p.getId() == id).findFirst().get();
+    public Product getProduct(Long id) {
+        /*return products.stream().filter(p -> p.getId() == id).findFirst().get();*/
+        return productRepository.findOne(id);
     }
 
     public void addProduct(Product product) {
-        products.add(product);
+        productRepository.save(product);
     }
 
-    public Boolean updateProduct(Product product, int id) {
-        Boolean status = Boolean.FALSE;
-        for (int i = 0; i < products.size(); i++) {
-            Product p = products.get(i);
-            if (p.getId() == id) {
-                products.set(i, product);
-                status = Boolean.TRUE;
-            }
+    public void updateProduct(Product product, Long id) {
+        product.setId(id);
+        productRepository.save(product);
+    }
+
+    public void deleteProduct(Long id) {
+        /*return products.removeIf(p -> p.getId() == id);*/
+        productRepository.delete(id);
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        List<Product> products = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            Product product = new Product("Product-" + i, "6546512|||||6542-" + i,
+                    542.265d + i, new Date(), "Company - " + i);
+            products.add(product);
         }
-        return status;
+        productRepository.save(products);
     }
 
-    public Boolean deleteProduct(int id) {
-        return products.removeIf(p -> p.getId() == id);
+    public Product getProductByName(String name) {
+        return productRepository.getProductByName(name);
     }
 }

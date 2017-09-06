@@ -20,8 +20,13 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/product/{id}", method = RequestMethod.GET)
-    public Product getProduct(@PathVariable int id) {
+    public Product getProduct(@PathVariable Long id) {
         return productService.getProduct(id);
+    }
+
+    @RequestMapping(value = "/product/name/{name}", method = RequestMethod.GET)
+    public Product getProductByName(@PathVariable String name) {
+        return productService.getProductByName(name);
     }
 
     @RequestMapping(value = "/products", method = RequestMethod.POST)
@@ -30,12 +35,12 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
-    public Boolean updateProduct(@RequestBody Product product, @PathVariable int id) {
-        return productService.updateProduct(product, id);
+    public void updateProduct(@RequestBody Product product, @PathVariable Long id) {
+        productService.updateProduct(product, id);
     }
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
-    public Boolean deleteProduct(@PathVariable int id) {
-        return productService.deleteProduct(id);
+    public void deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
     }
 }

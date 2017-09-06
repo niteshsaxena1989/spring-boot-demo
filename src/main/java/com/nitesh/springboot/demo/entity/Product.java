@@ -1,10 +1,15 @@
 package com.nitesh.springboot.demo.entity;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "product")
 public class Product {
 
-    int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Long id;
     String name;
     String barCode;
     Double mrp;
@@ -15,8 +20,7 @@ public class Product {
         super();
     }
 
-    public Product(int id, String name, String barCode, Double mrp, Date dom, String companyName) {
-        this.id = id;
+    public Product(String name, String barCode, Double mrp, Date dom, String companyName) {
         this.name = name;
         this.barCode = barCode;
         this.mrp = mrp;
@@ -24,11 +28,11 @@ public class Product {
         this.companyName = companyName;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
