@@ -20,7 +20,8 @@ public class ProductService implements InitializingBean {
     public Collection<Product> getAllProducts() {
         List<Product> products = new ArrayList<Product>();
         Iterable<Product> productIterable = productRepository.findAll();
-        productIterable.forEach(p -> products.add(p));
+        /*productIterable.forEach(p -> products.add(p));*/
+        productIterable.forEach(products::add);
         return products;
     }
 
